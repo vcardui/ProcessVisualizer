@@ -8,7 +8,7 @@
 # +----------------------------------------------------------------------------+
 # | Author.......: Vanessa Reteguín <vanessa@reteguin.com>
 # | First release: April 5th, 2026
-# | Last update..: April 5th, 2026
+# | Last update..: April 6th, 2026
 # | WhatIs.......: First Come First Serve (FIFO) - Class
 # +----------------------------------------------------------------------------+
 
