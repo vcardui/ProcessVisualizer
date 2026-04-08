@@ -25,13 +25,10 @@ class FIFOScheduler(BaseScheduler):
         super().__init__()
 
     def schedule(self, verbose=False):
-        time_limit = self.data_import['duration'].max() + self.data_import['arrival_time'].max()
+        time_limit = self.data_import['duration'].sum()
         print(f'time_limit: {time_limit} μs') if verbose else None
 
         self.data_import['remaining_time'] = None
-        # self.data_import = self.data_import.to_dict("records")
-
-        # self.data_working = pd.DataFrame()
 
         for i in range(0, time_limit + 1):
             print(f'{i} μs') if verbose else None
@@ -42,20 +39,20 @@ class FIFOScheduler(BaseScheduler):
 
             self.data_working = pd.concat([self.data_working, arrival_processes], ignore_index=True)
 
-            if isnan(self.data_working.iloc[0]['start_time']):
-                self.data_working.at[0, 'start_time'] = i
-                self.data_working.at[0, 'total_time'] = 0
-            else:
-                self.data_working.at[0, 'remaining_time'] -= 1
-                self.data_working.at[0, 'total_time'] += 1
-
             for j in self.data_working.index:
-                if j !=0:
-                    print(f"j: {j}")
-                    self.data_working.at[j, 'total_time'] += 1
+                if j == 0:
+                    if isnan(self.data_working.iloc[0]['start_time']):
+                        self.data_working.at[0, 'start_time'] = i
+                        self.data_working.at[0, 'total_time'] = 0
+                    else:
+                        self.data_working.at[0, 'remaining_time'] -= 1
+                        self.data_working.at[0, 'total_time'] += 1
+                else:
+                    # if isnan(self.data_working.iloc[j]['start_time']):
+                    #    self.data_working.at[j, 'waiting_time'] += 1
 
-                    if self.data_working.iloc[j]['start_time'] == 0:
-                        self.data_working.at[j, 'waiting_time'] += 1
+                    # if self.data_working.iloc[j] in arrival_processes:
+                    print(f"arrival_processes: {arrival_processes}")
 
             if self.data_working.iloc[0]['remaining_time'] == 0:
                 self.data_working.at[0, 'end_time'] = i
