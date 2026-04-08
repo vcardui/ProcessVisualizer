@@ -35,9 +35,9 @@ empty_record = {
 # ------------------------- Class -------------------------
 class BaseScheduler:
     def __init__(self):
-        self.data_import = None
-        self.data_working = None
-        self.data_export = None
+        self.data_import = pd.DataFrame()
+        self.data_working = pd.DataFrame()
+        self.data_export = pd.DataFrame()
 
     def import_data(self, file_name, show_data=False, show_msg=False):
         try:
@@ -61,8 +61,8 @@ class BaseScheduler:
         print(f'Creating CSV at {EXPORTS_FOLDER}{file_name}') if show_msg else None
         Path(f'{EXPORTS_FOLDER}').mkdir(parents=True, exist_ok=True)
 
-        self.data_export = pd.DataFrame.from_records(self.data_working)
-        self.data_export.to_csv(f'{EXPORTS_FOLDER}{file_name}', index=False)
+        # self.data_export.to_csv(f'{EXPORTS_FOLDER}{file_name}', index=False)
+        self.data_working.to_csv(f'{EXPORTS_FOLDER}{file_name}', index=False)
         print(f"File successfully created ({file_name})") if show_msg else None
 
     def schedule(self, verbose=False):
