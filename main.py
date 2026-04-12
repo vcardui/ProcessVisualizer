@@ -47,17 +47,15 @@ lo menos 200 palabras por personas.
 """
 
 # ------------ Resources / Documentation involved -------------
+
 # ------------------------- Libraries -------------------------
 
 # -------------------------- Imports --------------------------
 from FIFO_class import FIFOScheduler
 
-# -------------------------- Objects --------------------------
+# --------------------------- Code ----------------------------
 FIFO = FIFOScheduler()
 FIFO.import_data("test.csv")
 FIFO.schedule(verbose=True)
 FIFO.export_data("test_export.csv")
 
-# ------------------------- Variables -------------------------
-
-# --------------------------- Code ----------------------------

@@ -8,7 +8,7 @@
 # +----------------------------------------------------------------------------+
 # | Author.......: Vanessa Reteguín <vanessa@reteguin.com>
 # | First release: April 4th, 2026
-# | Last update..: April 4th, 2026
+# | Last update..: April 11th, 2026
 # | WhatIs.......: Process Scheduling Visualizer (Base) - Class
 # +----------------------------------------------------------------------------+
 
@@ -61,8 +61,7 @@ class BaseScheduler:
         print(f'Creating CSV at {EXPORTS_FOLDER}{file_name}') if show_msg else None
         Path(f'{EXPORTS_FOLDER}').mkdir(parents=True, exist_ok=True)
 
-        # self.data_export.to_csv(f'{EXPORTS_FOLDER}{file_name}', index=False)
-        self.data_working.to_csv(f'{EXPORTS_FOLDER}{file_name}', index=False)
+        self.data_export.to_csv(f'{EXPORTS_FOLDER}{file_name}', index=False)
         print(f"File successfully created ({file_name})") if show_msg else None
 
     def schedule(self, verbose=False):

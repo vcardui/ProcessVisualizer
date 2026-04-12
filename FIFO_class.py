@@ -8,13 +8,13 @@
 # +----------------------------------------------------------------------------+
 # | Author.......: Vanessa Reteguín <vanessa@reteguin.com>
 # | First release: April 5th, 2026
-# | Last update..: April 8th, 2026
+# | Last update..: April 11th, 2026
 # | WhatIs.......: First Come First Serve (FIFO) - Class
 # +----------------------------------------------------------------------------+
-from cmath import isnan
 
 # ------------------------- Libraries -------------------------
 import pandas as pd
+from cmath import isnan
 
 # -------------------------- Imports --------------------------
 from ProcessSchedulingVisualizer_class import BaseScheduler
@@ -39,33 +39,33 @@ class FIFOScheduler(BaseScheduler):
 
             self.data_working = pd.concat([self.data_working, arrival_processes], ignore_index=True)
 
-            for j in self.data_working.index:
-                if j == 0:
-                    if isnan(self.data_working.iloc[0]['start_time']):
-                        self.data_working.at[0, 'start_time'] = i
-                        self.data_working.at[0, 'total_time'] = 0
-                    else:
-                        self.data_working.at[0, 'remaining_time'] -= 1
-                        self.data_working.at[0, 'total_time'] += 1
-                else:
-                    # if isnan(self.data_working.iloc[j]['start_time']):
-                    #    self.data_working.at[j, 'waiting_time'] += 1
+            if isnan(self.data_working.iloc[0]['start_time']):
+                self.data_working.at[0, 'start_time'] = i
+                self.data_working.at[0, 'total_time'] = 0
+            else:
+                self.data_working.at[0, 'remaining_time'] -= 1
+                self.data_working.at[0, 'total_time'] += 1
 
-                    # if self.data_working.iloc[j] in arrival_processes:
-                    print(f"arrival_processes: {arrival_processes}")
+            not_arrival_processes = list(pd.concat([self.data_working, arrival_processes]).drop_duplicates(keep=False).index)
+            for j in not_arrival_processes:
+                if isnan(self.data_working.iloc[j]['start_time']):
+                    self.data_working.at[j, 'waiting_time'] += 1
+                    self.data_working.at[j, 'total_time'] = self.data_working.iloc[j]['waiting_time']
 
             if self.data_working.iloc[0]['remaining_time'] == 0:
                 self.data_working.at[0, 'end_time'] = i
-                self.data_working.at[0, 'average_time'] = (self.data_working.at[0, 'end_time'] - self.data_working.at[
-                    0, 'start_time']) / self.data_working.at[0, 'total_time']
+                self.data_working.at[0, 'average_time'] = self.data_working.at[0, 'total_time'] / (self.data_working.at[0, 'end_time'] - self.data_working.at[
+                    0, 'start_time'])
 
+                print(f'average_time: {self.data_working.at[0, 'total_time']} / ({self.data_working.at[0, 'end_time']} - {self.data_working.at[
+                    0, 'start_time']}) = {self.data_working.at[0, 'average_time']}') if verbose else None
                 print(f'w: {self.data_working.to_string(index=False)}') if verbose else None
 
                 self.data_export = pd.concat([self.data_export, self.data_working.iloc[:1]], ignore_index=True)
                 self.data_working = self.data_working.drop(self.data_working.index[0]).reset_index(drop=True)
 
                 self.data_working.at[0, 'start_time'] = i
-                self.data_working.at[0, 'total_time'] = 0
+                # self.data_working.at[0, 'total_time'] = 0
 
             print(f'w: {self.data_working.to_string(index=False)}') if verbose else None
             # print(f'i: {self.data_import.to_string(index=False)}') if verbose else None
