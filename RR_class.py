@@ -7,9 +7,9 @@
 # | www.carduitech.com/license/
 # +----------------------------------------------------------------------------+
 # | Author.......: Vanessa Reteguín <vanessa@reteguin.com>
-# | First release: April 5th, 2026
+# | First release: April 11th, 2026
 # | Last update..: April 11th, 2026
-# | WhatIs.......: First Come First Serve (FIFO) - Class
+# | WhatIs.......: Round Robin (RR) - Class
 # +----------------------------------------------------------------------------+
 
 # ------------------------- Libraries -------------------------
@@ -20,7 +20,7 @@ from cmath import isnan
 from ProcessSchedulingVisualizer_class import BaseScheduler
 
 # ------------------------- Class -------------------------
-class FIFOScheduler(BaseScheduler):
+class RRScheduler(BaseScheduler):
     def __init__(self):
         super().__init__()
 

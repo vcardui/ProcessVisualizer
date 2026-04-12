@@ -45,17 +45,36 @@ La entrega en Aula debe de ser el programa, y un documento , con pequeña
 explicación de algoritmos seleccionados, conclusiones individuales por
 lo menos 200 palabras por personas.
 """
-
 # ------------ Resources / Documentation involved -------------
 
 # ------------------------- Libraries -------------------------
 
 # -------------------------- Imports --------------------------
 from FIFO_class import FIFOScheduler
+from RR_class import RRScheduler
+from SPN_class import SPNScheduler
+
+# -------------------------- Objects --------------------------
+FIFO = FIFOScheduler()
+SPN = SPNScheduler()
+RR = RRScheduler()
 
 # --------------------------- Code ----------------------------
-FIFO = FIFOScheduler()
-FIFO.import_data("test.csv")
+"""
+# First Come First Serve (FIFO)
+FIFO.import_data("FCFS_demo.csv")
 FIFO.schedule(verbose=True)
-FIFO.export_data("test_export.csv")
+FIFO.export_data("FCFS_demo_export.csv")
+"""
 
+"""
+# Shortest Process Next (SPN)
+SPN.import_data("SPN_demo.csv")
+SPN.schedule(verbose=True)
+SPN.export_data("SPN_demo_export.csv")
+"""
+
+# Round Robin (RR)
+RR.import_data("RR_demo.csv")
+RR.schedule(verbose=True)
+RR.export_data("RR_demo_export.csv")
