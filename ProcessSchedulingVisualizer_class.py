@@ -15,6 +15,8 @@
 # ------------------------- Libraries -------------------------
 from pathlib import Path # Path().mkdir()
 import pandas as pd
+import matplotlib.pyplot as plt
+import numpy as np
 
 # ------------------------- Constraints -------------------------
 IMPORTS_FOLDER = 'data/'
@@ -66,3 +68,10 @@ class BaseScheduler:
 
     def schedule(self, verbose=False):
         pass
+
+    def render(self, show_msg=False):
+        end_time = int(self.data_export['end_time'].iloc[-1])
+        print(f"end_time: {end_time}") if show_msg else None
+
+        n_processes = int(len(self.data_export.index))
+        print(f"n_processes: {n_processes}") if show_msg else None

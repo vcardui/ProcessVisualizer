@@ -62,12 +62,12 @@ SPN = SPNScheduler()
 RR = RRScheduler(QUANTUM)
 
 # --------------------------- Code ----------------------------
-"""
+
 # First Come First Serve (FIFO)
-FIFO.import_data("FCFS_demo.csv")
+FIFO.import_data("FIFO_demo.csv")
 FIFO.schedule(verbose=True)
-FIFO.export_data("FCFS_demo_export.csv")
-"""
+FIFO.export_data("FIFO_demo_export.csv")
+FIFO.render(show_msg=True)
 
 """
 # Shortest Process Next (SPN)
@@ -76,7 +76,9 @@ SPN.schedule(verbose=True)
 SPN.export_data("SPN_demo_export.csv")
 """
 
+"""
 # Round Robin (RR)
 RR.import_data("RR_demo.csv")
 RR.schedule(verbose=True)
 RR.export_data("RR_demo_export.csv")
+"""

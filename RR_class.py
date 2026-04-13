@@ -8,7 +8,7 @@
 # +----------------------------------------------------------------------------+
 # | Author.......: Vanessa Reteguín <vanessa@reteguin.com>
 # | First release: April 11th, 2026
-# | Last update..: April 11th, 2026
+# | Last update..: April 12th, 2026
 # | WhatIs.......: Round Robin (RR) - Class
 # +----------------------------------------------------------------------------+
 
