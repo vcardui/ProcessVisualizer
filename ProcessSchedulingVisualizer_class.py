@@ -15,6 +15,7 @@
 # ------------------------- Libraries -------------------------
 from pathlib import Path # Path().mkdir()
 import pandas as pd
+import matplotlib
 import matplotlib.pyplot as plt
 import numpy as np
 
@@ -75,3 +76,25 @@ class BaseScheduler:
 
         n_processes = int(len(self.data_export.index))
         print(f"n_processes: {n_processes}") if show_msg else None
+
+        fig = plt.figure(figsize=(10, 5))
+        ax = fig.add_subplot(111)
+
+        x = 0
+        y = 0
+        for i in self.data_export.index:
+            random_rgb = np.random.rand(3)
+
+            rect = matplotlib.patches.Rectangle((x, y), 2, 1, color=random_rgb)
+            ax.add_patch(rect)
+            x += 2
+            y += 1
+
+        for j in range(0, end_time):
+            if j % 10 == 0:
+                plt.axvline(x=j, color='gray', linestyle='--')
+
+        plt.xlim([0, end_time])
+        plt.ylim([0, n_processes])
+
+        plt.show()
