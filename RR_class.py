@@ -21,8 +21,10 @@ from ProcessSchedulingVisualizer_class import BaseScheduler
 
 # ------------------------- Class -------------------------
 class RRScheduler(BaseScheduler):
-    def __init__(self):
+    def __init__(self, quantum=2):
         super().__init__()
+        self.quantum = quantum
+        self.change_process = False
 
     def schedule(self, verbose=False):
         time_limit = self.data_import['duration'].sum()
@@ -32,6 +34,11 @@ class RRScheduler(BaseScheduler):
 
         for i in range(0, time_limit + 1):
             print(f'{i} μs') if verbose else None
+
+            if (i % self.quantum == 0) and i != 0:
+                self.change_process = True
+            elif self.change_process:
+                self.change_process = False
 
             arrival_processes = self.data_import[self.data_import['arrival_time'] == i]
             arrival_processes['waiting_time'] = 0
@@ -66,6 +73,10 @@ class RRScheduler(BaseScheduler):
 
                 self.data_working.at[0, 'start_time'] = i
 
+            elif self.change_process:
+                self.data_working = pd.concat([self.data_working.iloc[1:], self.data_working.iloc[[0]]], ignore_index=True)
+
+            print(f'change process: {self.change_process}') if verbose else None
             print(f'w: {self.data_working.to_string(index=False)}') if verbose else None
             # print(f'i: {self.data_import.to_string(index=False)}') if verbose else None
 

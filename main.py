@@ -47,17 +47,19 @@ lo menos 200 palabras por personas.
 """
 # ------------ Resources / Documentation involved -------------
 
-# ------------------------- Libraries -------------------------
 
 # -------------------------- Imports --------------------------
 from FIFO_class import FIFOScheduler
 from RR_class import RRScheduler
 from SPN_class import SPNScheduler
 
+# ------------------------ Constraints ------------------------
+QUANTUM = 2
+
 # -------------------------- Objects --------------------------
 FIFO = FIFOScheduler()
 SPN = SPNScheduler()
-RR = RRScheduler()
+RR = RRScheduler(QUANTUM)
 
 # --------------------------- Code ----------------------------
 """
