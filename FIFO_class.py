@@ -37,7 +37,13 @@ class FIFOScheduler(BaseScheduler):
             arrival_processes['waiting_time'] = 0
             arrival_processes['remaining_time'] = arrival_processes['duration']
 
+            ##BORRAME
+            print(f'a: {arrival_processes.to_string(index=False)}') if verbose else None
             self.data_working = pd.concat([self.data_working, arrival_processes], ignore_index=True)
+
+            ##BORRAME
+            print(f'w: {self.data_working.to_string(index=False)}') if verbose else None
+            self.data_working = self.data_working.sort_values(by='arrival_time')
 
             if isnan(self.data_working.iloc[0]['start_time']):
                 self.data_working.at[0, 'start_time'] = i

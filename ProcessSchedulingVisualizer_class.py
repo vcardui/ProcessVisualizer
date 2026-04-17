@@ -12,12 +12,16 @@
 # | WhatIs.......: Process Scheduling Visualizer (Base) - Class
 # +----------------------------------------------------------------------------+
 
+# ------------ Resources / Documentation involved -------------
+# How to add a text into a Rectangle?: https://stackoverflow.com/questions/14531346/how-to-add-a-text-into-a-rectangle
+
 # ------------------------- Libraries -------------------------
 from pathlib import Path # Path().mkdir()
 import pandas as pd
+import numpy as np
+
 import matplotlib
 import matplotlib.pyplot as plt
-import numpy as np
 
 # ------------------------- Constraints -------------------------
 IMPORTS_FOLDER = 'data/'
@@ -35,12 +39,50 @@ empty_record = {
     "average_time": []
 }
 
+def ask_for_int(question, bad_response='Please enter a positive integer'):
+    ok_answer = False
+    value = 0
+
+    while not ok_answer:
+        value = input(question)
+        if value.isdigit():
+            ok_answer = True
+        else:
+            print(bad_response)
+
+    return int(value)
+
+def ask_for_yes_no(question, accepted, not_accepted, bad_response):
+    if accepted is None:
+        accepted = ['yes', 'Y', 'y', 'Yes', 'YES']
+
+    if not_accepted is None:
+        not_accepted = ['no', 'N', 'n', 'No', 'NO']
+
+    ok_answer = False
+    value = None
+
+    while not ok_answer:
+        value = input(question)
+        if value in accepted:
+            ok_answer = True
+            value = True
+        elif value in not_accepted:
+            ok_answer = True
+            value = False
+        else:
+            if bad_response:
+                print(f'{bad_response} {"/".join(map(str, accepted))} | {"/".join(map(str, not_accepted))}')
+
+    return bool(value)
+
 # ------------------------- Class -------------------------
 class BaseScheduler:
     def __init__(self):
         self.data_import = pd.DataFrame()
         self.data_working = pd.DataFrame()
         self.data_export = pd.DataFrame()
+        self.file_name = None
 
     def import_data(self, file_name, show_data=False, show_msg=False):
         try:
@@ -64,8 +106,41 @@ class BaseScheduler:
         print(f'Creating CSV at {EXPORTS_FOLDER}{file_name}') if show_msg else None
         Path(f'{EXPORTS_FOLDER}').mkdir(parents=True, exist_ok=True)
 
+        self.file_name = file_name
+
         self.data_export.to_csv(f'{EXPORTS_FOLDER}{file_name}', index=False)
         print(f"File successfully created ({file_name})") if show_msg else None
+
+    def get_user_input_data(self):
+        process_name = []
+        arrival_time = []
+        duration = []
+        priority = []
+
+        new = True
+        i = 1
+        max_items = 100
+        while new:
+            print(f'\nProceso #{i}')
+
+            process_name.append(input('Nombre del proceso: '))
+            arrival_time.append(ask_for_int('Tiempo de llegada (μs): ', 'Por favor ingrese un número entero positivo'))
+            duration.append(ask_for_int('Duración (μs): ', 'Por favor ingrese un número entero'))
+            priority.append(ask_for_int('Prioridad: ', 'Por favor ingrese un número entero'))
+
+            i += 1
+            new = ask_for_yes_no('¿Desea ingresar un nuevo elemento?: ', accepted=['yes', 'Y', 'y', 'Yes', 'YES', 'si', 's', 'S', 'SI', 'sí', 'SÍ'], not_accepted=['no', 'N', 'n', 'No', 'NO'], bad_response='[!] Respuesta no válida\nPor favor ingrese: ')
+
+        data_dic = {
+            'process_name': process_name,
+            'arrival_time': arrival_time,
+            'duration': duration,
+            'priority': priority
+        }
+
+        print(data_dic)
+
+        self.data_import = pd.DataFrame.from_dict(data_dic)
 
     def schedule(self, verbose=False):
         pass
@@ -80,21 +155,40 @@ class BaseScheduler:
         fig = plt.figure(figsize=(10, 5))
         ax = fig.add_subplot(111)
 
-        x = 0
         y = 0
-        for i in self.data_export.index:
+        for index, row in self.data_export.iterrows():
             random_rgb = np.random.rand(3)
 
-            rect = matplotlib.patches.Rectangle((x, y), 2, 1, color=random_rgb)
-            ax.add_patch(rect)
-            x += 2
+            arrival_time = row['arrival_time']
+            start = row['start_time']
+            finish = row['end_time']
+
+            print(f'arrival_time: {arrival_time}, start: {start}, finish: {finish}') if show_msg else None
+
+            waiting = matplotlib.patches.Rectangle((arrival_time, y), start - arrival_time, 1, color=random_rgb, fill=False, hatch='/')
+            working = matplotlib.patches.Rectangle((start, y), finish - start, 1, color=random_rgb)
+
+            ax.add_patch(waiting)
+            ax.add_patch(working)
+
+            rx, ry = working.get_xy()
+            cx = rx + working.get_width() / 2.0
+            cy = (ry + working.get_height() / 2.0) - 0.05
+            ax.annotate(row['process_name'], (cx, cy), color='w', weight='bold', fontsize=10, ha='center', va='center')
+
             y += 1
 
         for j in range(0, end_time):
             if j % 10 == 0:
                 plt.axvline(x=j, color='gray', linestyle='--')
+            elif j % 2 == 0:
+                plt.axvline(x=j, color='gray', linestyle=':')
 
         plt.xlim([0, end_time])
         plt.ylim([0, n_processes])
+
+        ax.set_title(f'{self.file_name} - FIFO')
+        ax.set_xlabel("Tiempo μs")
+        ax.set_ylabel("N° de proceso")
 
         plt.show()
