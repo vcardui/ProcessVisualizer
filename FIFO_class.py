@@ -25,6 +25,7 @@ class FIFOScheduler(BaseScheduler):
         super().__init__()
 
     def schedule(self, verbose=False):
+        print(self.data_import)
         time_limit = self.data_import['duration'].sum()
         print(f'time_limit: {time_limit} μs') if verbose else None
 

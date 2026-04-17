@@ -84,7 +84,7 @@ class BaseScheduler:
         self.data_export = pd.DataFrame()
         self.file_name = None
 
-    def import_data(self, file_name, show_data=False, show_msg=False):
+    def import_file(self, file_name, show_data=False, show_msg=False):
         try:
             self.data_import = pd.read_csv(IMPORTS_FOLDER + file_name, index_col=False)
             print(f"File found ({file_name})") if show_msg else None
@@ -102,6 +102,11 @@ class BaseScheduler:
         finally:
             print(self.data_import.head()) if show_data else None
 
+    def import_dataframe(self, dataframe, show_data=False):
+        self.data_import = dataframe
+        if show_data:
+            print(self.data_import.head()) if show_data else None
+
     def export_data(self, file_name, show_msg=False):
         print(f'Creating CSV at {EXPORTS_FOLDER}{file_name}') if show_msg else None
         Path(f'{EXPORTS_FOLDER}').mkdir(parents=True, exist_ok=True)
@@ -111,7 +116,7 @@ class BaseScheduler:
         self.data_export.to_csv(f'{EXPORTS_FOLDER}{file_name}', index=False)
         print(f"File successfully created ({file_name})") if show_msg else None
 
-    def get_user_input_data(self):
+    def get_user_input_data(self, file_name):
         process_name = []
         arrival_time = []
         duration = []
@@ -138,9 +143,13 @@ class BaseScheduler:
             'priority': priority
         }
 
-        print(data_dic)
-
-        self.data_import = pd.DataFrame.from_dict(data_dic)
+        data = pd.DataFrame.from_dict(data_dic)
+        data['start_time'] = None
+        data['end_time'] = None
+        data['total_time'] = None
+        data['waiting_time'] = None
+        data['average_time'] = None
+        data.to_csv(IMPORTS_FOLDER + file_name, index=False)
 
     def schedule(self, verbose=False):
         pass
