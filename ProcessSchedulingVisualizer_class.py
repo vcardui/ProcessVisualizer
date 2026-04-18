@@ -117,7 +117,7 @@ class BaseScheduler:
         else:
             print(f'Empty data to export - File not created')
 
-    def get_user_input_data(self, file_name):
+    def get_user_input_data(self, file_name, verbose=False):
         process_name = []
         arrival_time = []
         duration = []
@@ -135,21 +135,19 @@ class BaseScheduler:
             priority.append(ask_for_int('Prioridad: ', 'Por favor ingrese un número entero'))
 
             i += 1
-            new = ask_for_yes_no('¿Desea ingresar un nuevo elemento?: ', accepted=['yes', 'Y', 'y', 'Yes', 'YES', 'si', 's', 'S', 'SI', 'sí', 'SÍ'], not_accepted=['no', 'N', 'n', 'No', 'NO'], bad_response='[!] Respuesta no válida\nPor favor ingrese: ')
+            new = ask_for_yes_no('¿Desea ingresar un nuevo elemento?: ',
+                                 accepted=['yes', 'Y', 'y', 'Yes', 'YES', 'si', 's', 'S', 'SI', 'sí', 'SÍ'],
+                                 not_accepted=['no', 'N', 'n', 'No', 'NO'],
+                                 bad_response='[!] Respuesta no válida\nPor favor ingrese: ')
 
-        data_dic = {
-            'process_name': process_name,
-            'arrival_time': arrival_time,
-            'duration': duration,
-            'priority': priority
-        }
+        data = pd.DataFrame(columns=['process_name', 'arrival_time', 'duration', 'priority', 'start_time', 'end_time', 'total_time', 'waiting_time', 'average_time'])
+        data['process_name'] = process_name
+        data['arrival_time'] = arrival_time
+        data['duration'] = duration
+        data['priority'] = priority
 
-        data = pd.DataFrame.from_dict(data_dic)
-        data['start_time'] = None
-        data['end_time'] = None
-        data['total_time'] = None
-        data['waiting_time'] = None
-        data['average_time'] = None
+        print(data) if verbose else None
+
         data.to_csv(IMPORTS_FOLDER + file_name, index=False)
 
     def get_random_data(self, file_name, items=20, verbose=False):
@@ -184,7 +182,7 @@ class BaseScheduler:
         n_processes = int(len(self.data_export.index))
         print(f"n_processes: {n_processes}") if show_msg else None
 
-        fig = plt.figure(figsize=(10, 5))
+        fig = plt.figure(figsize=(14, 7))
         ax = fig.add_subplot(111)
 
         y = 0
