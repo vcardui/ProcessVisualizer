@@ -62,7 +62,7 @@ SPN = SPNScheduler()
 RR = RRScheduler(QUANTUM)
 
 # --------------------------- Code ----------------------------
-
+"""
 # First Come First Serve (FIFO) -> Input
 import_filename = 'FIFO_demo_3.csv'
 export_filename = 'FIFO_demo_3_export.csv'
@@ -73,6 +73,7 @@ FIFO.import_file(import_filename, show_msg=True, show_data=True)
 FIFO.schedule(verbose=True)
 FIFO.export_data(export_filename)
 FIFO.render(show_msg=True)
+"""
 
 
 """
@@ -98,3 +99,9 @@ RR.schedule(verbose=True)
 RR.export_data("RR_demo_export.csv")
 RR.render(show_msg=True)
 """
+
+# Round Robin 2 (RR)
+RR.import_file("RR2_demo.csv")
+RR.schedule(verbose=True)
+RR.export_data("RR2_demo_export.csv")
+RR.render(show_msg=True)

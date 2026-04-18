@@ -28,8 +28,8 @@ class FIFOScheduler(BaseScheduler):
         self.data_import = self.data_import.sort_values(by='arrival_time')
         print(f'i: {self.data_import.to_string(index=False)}') if verbose else None
 
-        time_limit = self.data_import['duration'].sum()
-        # time_limit = self.data_import[['duration', 'arrival_time']].sum()
+        time_limit = self.data_import['duration'].sum() + self.data_import.iloc[-1]['arrival_time']
+
         print(f'time_limit: {time_limit} μs') if verbose else None
 
         self.data_import['remaining_time'] = None
