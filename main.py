@@ -67,19 +67,20 @@ RR = RRScheduler(QUANTUM)
 import_filename = 'FIFO_demo_2.csv'
 export_filename = 'FIFO_demo_2_export.csv'
 
-FIFO.get_user_input_data(import_filename)
-FIFO.import_file(import_filename)
+FIFO.get_random_data(import_filename, items=10, verbose=False)
+# FIFO.get_user_input_data(import_filename)
+FIFO.import_file(import_filename, show_msg=True, show_data=True)
 FIFO.schedule(verbose=True)
 FIFO.export_data(export_filename)
 FIFO.render(show_msg=True)
 """
+
 
 # First Come First Serve (FIFO) -> Loaded
 FIFO.import_file("FIFO_demo.csv")
 FIFO.schedule(verbose=True)
 FIFO.export_data("FIFO_demo_export.csv")
 FIFO.render(show_msg=True)
-
 
 """
 # Shortest Process Next (SPN)

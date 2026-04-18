@@ -20,6 +20,9 @@ from pathlib import Path # Path().mkdir()
 import pandas as pd
 import numpy as np
 
+import random
+import string
+
 import matplotlib
 import matplotlib.pyplot as plt
 
@@ -102,19 +105,17 @@ class BaseScheduler:
         finally:
             print(self.data_import.head()) if show_data else None
 
-    def import_dataframe(self, dataframe, show_data=False):
-        self.data_import = dataframe
-        if show_data:
-            print(self.data_import.head()) if show_data else None
-
     def export_data(self, file_name, show_msg=False):
-        print(f'Creating CSV at {EXPORTS_FOLDER}{file_name}') if show_msg else None
-        Path(f'{EXPORTS_FOLDER}').mkdir(parents=True, exist_ok=True)
+        if not self.data_export.empty:
+            print(f'Creating CSV at {EXPORTS_FOLDER}{file_name}') if show_msg else None
+            Path(f'{EXPORTS_FOLDER}').mkdir(parents=True, exist_ok=True)
 
-        self.file_name = file_name
+            self.file_name = file_name
 
-        self.data_export.to_csv(f'{EXPORTS_FOLDER}{file_name}', index=False)
-        print(f"File successfully created ({file_name})") if show_msg else None
+            self.data_export.to_csv(f'{EXPORTS_FOLDER}{file_name}', index=False)
+            print(f"File successfully created ({file_name})") if show_msg else None
+        else:
+            print(f'Empty data to export - File not created')
 
     def get_user_input_data(self, file_name):
         process_name = []
@@ -149,6 +150,28 @@ class BaseScheduler:
         data['total_time'] = None
         data['waiting_time'] = None
         data['average_time'] = None
+        data.to_csv(IMPORTS_FOLDER + file_name, index=False)
+
+    def get_random_data(self, file_name, items=20, verbose=False):
+        process_name = []
+        arrival_time = []
+        duration = []
+        priority = []
+
+        for i in range(0, items + 1):
+            process_name.append(string.ascii_uppercase[i])
+            arrival_time.append(random.randint(1, 20))
+            duration.append(random.randint(1, 10))
+            priority.append(random.randint(1, 5))
+
+        data = pd.DataFrame(columns=['process_name', 'arrival_time', 'duration', 'priority', 'start_time', 'end_time', 'total_time', 'waiting_time', 'average_time'])
+        data['process_name'] = process_name
+        data['arrival_time'] = arrival_time
+        data['duration'] = duration
+        data['priority'] = priority
+
+        print(data) if verbose else None
+
         data.to_csv(IMPORTS_FOLDER + file_name, index=False)
 
     def schedule(self, verbose=False):
