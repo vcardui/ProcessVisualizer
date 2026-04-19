@@ -90,6 +90,7 @@ class BaseScheduler:
     def import_file(self, file_name, show_data=False, show_msg=False):
         try:
             self.data_import = pd.read_csv(IMPORTS_FOLDER + file_name, index_col=False)
+            print(self.data_import.to_dict()) if show_msg else None
             print(f"File found ({file_name})") if show_msg else None
 
         except FileNotFoundError or IndexError:
