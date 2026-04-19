@@ -32,14 +32,6 @@ class RRScheduler(BaseScheduler):
         self.change_process = False
 
     def split_processes(self):
-        self.data_import = pd.DataFrame(
-            {'process_name': {0: 'A', 1: 'B', 2: 'E', 3: 'C', 4: 'D'}, 'arrival_time': {0: 0, 1: 2, 2: 4, 3: 6, 4: 6},
-             'duration': {0: 4, 1: 5, 2: 2, 3: 1, 4: 2}, 'priority': {0: 0, 1: 0, 2: 0, 3: 0, 4: 0},
-             'start_time': {0: np.nan, 1: np.nan, 2: np.nan, 3: np.nan, 4: np.nan},
-             'end_time': {0: np.nan, 1: np.nan, 2: np.nan, 3: np.nan, 4: np.nan},
-             'total_time': {0: np.nan, 1: np.nan, 2: np.nan, 3: np.nan, 4: np.nan},
-             'waiting_time': {0: np.nan, 1: np.nan, 2: np.nan, 3: np.nan, 4: np.nan},
-             'average_time': {0: np.nan, 1: np.nan, 2: np.nan, 3: np.nan, 4: np.nan}})
         temp = pd.DataFrame(columns=self.data_import.columns)
 
         self.data_import['remaining'] = self.data_import['duration']
