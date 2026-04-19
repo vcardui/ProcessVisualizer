@@ -8,7 +8,7 @@
 # +----------------------------------------------------------------------------+
 # | Author.......: Vanessa Reteguín <vanessa@reteguin.com>
 # | First release: April 11th, 2026
-# | Last update..: April 12th, 2026
+# | Last update..: April 19th, 2026
 # | WhatIs.......: Round Robin (RR) - Class
 # +----------------------------------------------------------------------------+
 
@@ -29,7 +29,7 @@ class RRScheduler(BaseScheduler):
     def __init__(self, quantum=2):
         super().__init__()
         self.quantum = quantum
-        self.change_process = False
+        self.n_processes = False
 
     def split_processes(self):
         temp = pd.DataFrame(columns=self.data_import.columns)
@@ -65,6 +65,7 @@ class RRScheduler(BaseScheduler):
                 self.data_import = pd.concat([self.data_import.iloc[1:], self.data_import.iloc[[0]]], ignore_index=True)
 
         self.data_import = temp.drop(columns=['remaining'])
+        self.n_processes = len(processes)
 
     def schedule(self, verbose=False):
         self.data_import = self.data_import.sort_values(by='arrival_time')
@@ -147,11 +148,10 @@ class RRScheduler(BaseScheduler):
         print(f'e: {self.data_export.to_string(index=False)}') if verbose else None
 
     def render(self, show_msg=False):
-        self.data_export = pd.read_csv('data/RR2_demo_export.csv', index_col=False)
         end_time = int(self.data_export['end_time'].iloc[-1])
         print(f"end_time: {end_time}") if show_msg else None
 
-        n_processes = int(len(self.data_export.index))
+        n_processes = self.n_processes
         print(f"n_processes: {n_processes}") if show_msg else None
 
         row_process_name = {}

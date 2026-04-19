@@ -1,0 +1,14 @@
+process_name,arrival_time,duration,priority,start_time,end_time,total_time,waiting_time,average_time
+G,7,2,5
+I,10,8,3
+E,4,8,2
+A,5,2,3
+C,6,5,1
+D,5,3,4
+H,7,4,1
+J,12,5,2
+B,1,4,2
+L,16,5,4
+M,19,2,2
+K,15,6,5
+F,5,3,5

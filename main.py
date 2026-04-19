@@ -8,7 +8,7 @@
 # +----------------------------------------------------------------------------+
 # | Author.......: Vanessa Reteguín <vanessa@reteguin.com>
 # | First release: April 4th, 2026
-# | Last update..: April 4th, 2026
+# | Last update..: April 19th, 2026
 # | WhatIs.......: Process Visualizer - Main
 # +-----------------------------------------------------------------------------+
 # ------------------------- Instructions ----------------------
@@ -46,7 +46,7 @@ explicación de algoritmos seleccionados, conclusiones individuales por
 lo menos 200 palabras por personas.
 """
 # ------------ Resources / Documentation involved -------------
-
+# MUCHO, MUCHO, DEMASIADO, StackOverflow
 
 # -------------------------- Imports --------------------------
 from FIFO_class import FIFOScheduler
@@ -75,7 +75,6 @@ FIFO.export_data(export_filename)
 FIFO.render(show_msg=True)
 """
 
-
 """
 # First Come First Serve (FIFO) -> Loaded
 FIFO.import_file("FIFO_demo.csv")
@@ -92,17 +91,9 @@ SPN.export_data("SPN_demo_export.csv")
 SPN.render(show_msg=True)
 """
 
-"""
 # Round Robin (RR)
-RR.import_file("RR_demo.csv")
+RR.import_file("RR_demo.csv",show_msg=True)
 RR.schedule(verbose=True)
 RR.export_data("RR_demo_export.csv")
-RR.render(show_msg=True)
-"""
-
-# Round Robin 2 (RR)
-RR.import_file("RR2_demo.csv",show_msg=True)
-RR.schedule(verbose=True)
-RR.export_data("RR2_demo_export.csv")
 RR.render(show_msg=True)
 
