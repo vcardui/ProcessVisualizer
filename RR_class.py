@@ -95,3 +95,53 @@ class RRScheduler(BaseScheduler):
                 # print(f'i: {self.data_import.to_string(index=False)}') if verbose else None
 
         print(f'e: {self.data_export.to_string(index=False)}') if verbose else None
+
+        def render(self, show_msg=False):
+            end_time = int(self.data_export['end_time'].iloc[-1])
+            print(f"end_time: {end_time}") if show_msg else None
+
+            n_processes = int(len(self.data_export.index))
+            print(f"n_processes: {n_processes}") if show_msg else None
+
+            fig = plt.figure(figsize=(14, 7))
+            ax = fig.add_subplot(111)
+
+            y = 0
+            for index, row in self.data_export.iterrows():
+                random_rgb = np.random.rand(3)
+
+                arrival_time = row['arrival_time']
+                start = row['start_time']
+                finish = row['end_time']
+
+                print(f'arrival_time: {arrival_time}, start: {start}, finish: {finish}') if show_msg else None
+
+                waiting = matplotlib.patches.Rectangle((arrival_time, y), start - arrival_time, 1, color=random_rgb,
+                                                       fill=False, hatch='/')
+                working = matplotlib.patches.Rectangle((start, y), finish - start, 1, color=random_rgb)
+
+                ax.add_patch(waiting)
+                ax.add_patch(working)
+
+                rx, ry = working.get_xy()
+                cx = rx + working.get_width() / 2.0
+                cy = (ry + working.get_height() / 2.0) - 0.05
+                ax.annotate(row['process_name'], (cx, cy), color='w', weight='bold', fontsize=10, ha='center',
+                            va='center')
+
+                y += 1
+
+            for j in range(0, end_time):
+                if j % 10 == 0:
+                    plt.axvline(x=j, color='gray', linestyle='--')
+                elif j % 2 == 0:
+                    plt.axvline(x=j, color='gray', linestyle=':')
+
+            plt.xlim([0, end_time])
+            plt.ylim([0, n_processes])
+
+            ax.set_title(f'{self.file_name} - FIFO')
+            ax.set_xlabel("Tiempo μs")
+            ax.set_ylabel("N° de proceso")
+
+            plt.show()
