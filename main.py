@@ -83,17 +83,20 @@ FIFO.export_data("FIFO_demo_export.csv")
 FIFO.render(show_msg=True)
 """
 
-"""
-# Shortest Process Next (SPN)
-SPN.import_file("SPN_demo.csv")
-SPN.schedule(verbose=True)
-SPN.export_data("SPN_demo_export.csv")
-SPN.render(show_msg=True)
-"""
 
+# Shortest Process Next (SPN)
+SPN.import_file("SPN_demo_2.csv")
+SPN.schedule(verbose=True)
+SPN.export_data("SPN_demo_2_export.csv")
+SPN.render(show_msg=True)
+
+
+"""
 # Round Robin (RR)
-RR.import_file("RR_demo.csv",show_msg=True)
+RR.get_random_data('RR_demo_random.csv', items=10, verbose=False)
+RR.import_file("RR_demo_random.csv",show_msg=True)
 RR.schedule(verbose=True)
-RR.export_data("RR_demo_export.csv")
+RR.export_data("RR_demo_random_export.csv")
 RR.render(show_msg=True)
+"""
 

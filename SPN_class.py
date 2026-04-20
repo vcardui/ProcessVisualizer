@@ -50,9 +50,7 @@ class SPNScheduler(BaseScheduler):
                 else:
                     self.data_working.at[0, 'total_time'] += 1
 
-            not_arrival_processes = list(
-                pd.concat([self.data_working, arrival_processes]).drop_duplicates(keep=False).index)
-            for j in not_arrival_processes:
+            for j in self.data_working.index:
                 if isnan(self.data_working.iloc[j]['start_time']):
                     self.data_working.at[j, 'waiting_time'] += 1
                     self.data_working.at[j, 'total_time'] = self.data_working.iloc[j]['waiting_time']

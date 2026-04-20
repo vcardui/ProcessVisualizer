@@ -151,13 +151,13 @@ class BaseScheduler:
 
         data.to_csv(IMPORTS_FOLDER + file_name, index=False)
 
-    def get_random_data(self, file_name, items=20, verbose=False):
+    def get_random_data(self, file_name, items, verbose=False):
         process_name = []
         arrival_time = []
         duration = []
         priority = []
 
-        for i in range(0, items + 1):
+        for i in range(0, items):
             process_name.append(string.ascii_uppercase[i])
             arrival_time.append(random.randint(1, 20))
             duration.append(random.randint(1, 10))
