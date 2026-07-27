@@ -2,7 +2,7 @@
 
 # 🕞 Process Visualizer
 
-Operating System Scheduling algorithms visualizer (FIFO, SPN and Round Robin) made with python. Plotted graph with matplotlib. Data manipulated with pandas.
+Operating System Scheduling algorithms visualizer (FIFO, SPN and Round Robin) made with python. Plotted graph with matplotlib. Data manipulated with pandas and lumpy.
 
 ## 🎯 Objective
 
